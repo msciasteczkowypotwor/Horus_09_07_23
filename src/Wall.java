@@ -3,26 +3,43 @@ import java.util.List;
 import java.util.Optional;
 
 public class Wall implements Structure{
-    private List<Block> blocks;
+    public Wall(){
+        blocks = new ArrayList<>();
+    }
+    private final List<Block> blocks;
     @Override
     public Optional<Block> findBlockByColor(String color) {
-        List<Block> onlyBlocks = blocks;
+        //tworzę listę składającą się tylko z pojedynczych bloków
+        //brak composite block
+        List<Block> onlyBlocks = leaveOnlyBlocks(blocks);
 
+        //znajduję pierwszy element który zgadza się co do koloru
+        return onlyBlocks.stream()
+                .filter(block -> block.getColor().equals(color))
+                .findFirst();
+
+    }
+    private  List<Block> leaveOnlyBlocks(List<Block> blocks){
+        //metoda zostawia w liście tylko proste bloki
+        //brak compositeblock
+        List<Block> onlyBlocks = blocks;
         while(anyCompositeBlocks(onlyBlocks)){
             onlyBlocks = formatToBlocks(onlyBlocks);
         }
-
-        return onlyBlocks.stream().filter(block -> block.getColor().equals(color)).findFirst();
-
+        return onlyBlocks;
     }
-    public boolean anyCompositeBlocks(List<Block> blocks){
+    private boolean anyCompositeBlocks(List<Block> blocks){
+        //sprawdza czy na liście znajduje się jakikolwiek compositeBlock
         for (Block bl:blocks) {
             if(bl  instanceof CompositeBlock)
                 return true;
         }
         return false;
     }
-    public List<Block> formatToBlocks(List<Block> blocks){
+
+    private List<Block> formatToBlocks(List<Block> blocks){
+        //metoda iteruje po blokach, jeżeli blok jest composite to dodaje do
+        //listy poszczególne jego składniki
         List<Block> newBlocks = new ArrayList<>();
 
         for (Block bl: blocks) {
@@ -38,11 +55,12 @@ public class Wall implements Structure{
 
     @Override
     public List<Block> findBlocksByMaterial(String material) {
-        List<Block> onlyBlocks = blocks;
+        //analogicznie jak w findBlocksByColor tworzę listę
+        //składającą się tylko z prostych bloków
+        //brak compositeBlock
+        List<Block> onlyBlocks = leaveOnlyBlocks(blocks);
 
-        while(anyCompositeBlocks(onlyBlocks)){
-            onlyBlocks = formatToBlocks(onlyBlocks);
-        }
+        //zostawiam tylko bloki z odpowiedniego materiału
       onlyBlocks.removeIf(block -> !block.getMaterial().equals(material));
 
         return onlyBlocks;
@@ -51,16 +69,11 @@ public class Wall implements Structure{
 
     @Override
     public int count() {
-        List<Block> onlyBlocks = blocks;
-
-        while(anyCompositeBlocks(onlyBlocks)){
-            onlyBlocks = formatToBlocks(onlyBlocks);
-        }
+        //analogicznie jak wcześniej, tworzę listę
+        //składającą się tylko z prostych bloków
+        //brak compositeBlock
+        List<Block> onlyBlocks = leaveOnlyBlocks(blocks);
         return onlyBlocks.size();
-    }
-
-    public Wall(){
-        blocks = new ArrayList<>();
     }
     public void add(Block bl){
         blocks.add(bl);

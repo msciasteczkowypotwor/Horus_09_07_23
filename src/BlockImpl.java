@@ -1,6 +1,11 @@
 public class BlockImpl implements Block{
+    public BlockImpl(String color, String material){
+        this.color = color;
+        this.material = material;
+    }
     private String color;
     private String material;
+
     @Override
     public String getColor() {
         return color;
@@ -9,11 +14,6 @@ public class BlockImpl implements Block{
     @Override
     public String getMaterial() {
         return material;
-    }
-
-    public BlockImpl(String color, String material){
-        this.color = color;
-        this.material = material;
     }
     public String toString(){
         return "Color: " + getColor() + ", material: " + getMaterial();

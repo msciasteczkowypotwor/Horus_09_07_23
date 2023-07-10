@@ -2,15 +2,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CompositeBlockImpl implements CompositeBlock{
-    private List<Block> blockList;
     public CompositeBlockImpl(){
-        blockList = new ArrayList<>();
+        blocks = new ArrayList<>();
     }
+    private List<Block> blocks;
 
     @Override
     public String getColor() {
-        String pom = new String();
-        for (Block bl:blockList) {
+        //nie wiedziałem do końca co powinna zwracać ta metoda
+        //w przypadku compositeblock - zwarcam wszystkie kolory
+        //poszczególnych bloków zawierających się w composite block
+        String pom = "";
+        for (Block bl: blocks) {
             pom = pom + bl.getColor() + ", ";
         }
         return pom;
@@ -18,8 +21,10 @@ public class CompositeBlockImpl implements CompositeBlock{
 
     @Override
     public String getMaterial() {
-        String pom = new String();
-        for (Block bl:blockList) {
+        //zwarcam wszystkie materiały
+        //poszczególnych bloków zawierających się w composite block
+        String pom = "";
+        for (Block bl: blocks) {
             pom = pom + bl.getMaterial() + ", ";
         }
         return pom;
@@ -27,10 +32,10 @@ public class CompositeBlockImpl implements CompositeBlock{
 
     @Override
     public List<Block> getBlocks() {
-        return blockList;
+        return blocks;
     }
     public void add(Block b){
-        blockList.add(b);
+        blocks.add(b);
     }
 
 }
